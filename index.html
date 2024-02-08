@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="echarts.js"></script>
+    <script src="bmap.js"></script>
+    <style>
+        body, html {
+            height: 100%;
+        }
+
+        #main {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <title>Title</title>
+</head>
+<body>
+<div id="main"></div>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=YuRwHLu4fHnDRYlzaDzER9ff7XYcg4vm"></script>
+<script type="text/javascript">
+    // 假设你有一个HTML元素与id 'main'
+    const myChart = echarts.init(document.getElementById('main'));
+
+    var option;
+
+    const data = [
+        {name: '白鹭郡西', value: 30},
+        {name: '揽潮华庭', value: 22},
+        {name: '潮闻天下', value: 21.15},
+        {name: '国际金融中心', value: 15},
+        {name: '望小河云庄', value: 12},
+        {name: '馥香园', value: 12},
+        {name: '绿城云溪里', value: 11.34},
+        {name: '潮观平澜府', value: 11.02},
+        {name: '望翠蓝庭', value: 11},
+        {name: '珹上润府', value: 11},
+        {name: '翡云润府', value: 11},
+        {name: '溪映听庐', value: 10.91},
+        {name: '棠前嘉悦府', value: 10.13},
+        {name: '芝澜月华轩', value: 10},
+    ];
+    const geoCoordMap = {
+        白鹭郡西: [120.019203, 30.356621],
+        揽潮华庭: [120.198215, 30.244655],
+        潮闻天下: [120.415517, 30.287641],
+        国际金融中心: [120.240097, 30.237805],
+        望小河云庄: [120.136604, 30.311363],
+        馥香园: [120.120639, 30.300394],
+        绿城云溪里: [119.975912, 30.376417],
+        潮观平澜府: [120.23142, 30.282999],
+        望翠蓝庭: [120.134339, 30.28199],
+        珹上润府: [120.125766, 30.312651],
+        翡云润府: [120.228324, 30.281614],
+        溪映听庐: [120.048865, 30.175014],
+        棠前嘉悦府: [120.179229, 30.304979],
+        芝澜月华轩: [120.238742, 30.28599],
+    };
+    const convertData = function (data) {
+        var res = [];
+        for (var i = 0; i < data.length; i++) {
+            var geoCoord = geoCoordMap[data[i].name];
+            if (geoCoord) {
+                res.push({
+                    name: data[i].name,
+                    value: geoCoord.concat(data[i].value)
+                });
+            }
+        }
+        return res;
+    };
+
+    function createRich(imgList) {
+        var rich = {};
+        imgList.forEach(function (imgUrl, index) {
+            var label = index;
+            rich[label] = {
+                height: 80,
+                width: 80,
+                backgroundColor: {
+                    image: imgUrl
+                }
+            };
+        });
+        return rich;
+    };
+    option = {
+
+        bmap: {
+            center: [119.975912, 30.376417],
+            zoom: 12,
+            roam: true,
+            mapStyle: {
+                styleJson: [
+                    {
+                        featureType: 'water',
+                        elementType: 'all',
+                        stylers: {
+                            color: '#d1d1d1'
+                        }
+                    },
+                    {
+                        featureType: 'land',
+                        elementType: 'all',
+                        stylers: {
+                            color: '#f3f3f3'
+                        }
+                    },
+                    {
+                        featureType: 'railway',
+                        elementType: 'all',
+                        stylers: {
+                            visibility: 'off'
+                        }
+                    },
+                    {
+                        featureType: 'highway',
+                        elementType: 'all',
+                        stylers: {
+                            color: '#fdfdfd'
+                        }
+                    },
+                    {
+                        featureType: 'highway',
+                        elementType: 'labels',
+                        stylers: {
+                            visibility: 'off'
+                        }
+                    },
+                    {
+                        featureType: 'arterial',
+                        elementType: 'geometry',
+                        stylers: {
+                            color: '#fefefe'
+                        }
+                    },
+                    {
+                        featureType: 'arterial',
+                        elementType: 'geometry.fill',
+                        stylers: {
+                            color: '#fefefe'
+                        }
+                    },
+                    {
+                        featureType: 'poi',
+                        elementType: 'all',
+                        stylers: {
+                            visibility: 'off'
+                        }
+                    },
+                    {
+                        featureType: 'green',
+                        elementType: 'all',
+                        stylers: {
+                            visibility: 'off'
+                        }
+                    },
+                    {
+                        featureType: 'subway',
+                        elementType: 'all',
+                        stylers: {
+                            visibility: 'off'
+                        }
+                    },
+                    {
+                        featureType: 'manmade',
+                        elementType: 'all',
+                        stylers: {
+                            color: '#d1d1d1'
+                        }
+                    },
+                    {
+                        featureType: 'local',
+                        elementType: 'all',
+                        stylers: {
+                            color: '#d1d1d1'
+                        }
+                    },
+                    {
+                        featureType: 'arterial',
+                        elementType: 'labels',
+                        stylers: {
+                            visibility: 'off'
+                        }
+                    },
+                    {
+                        featureType: 'boundary',
+                        elementType: 'all',
+                        stylers: {
+                            color: '#fefefe'
+                        }
+                    },
+                    {
+                        featureType: 'building',
+                        elementType: 'all',
+                        stylers: {
+                            color: '#d1d1d1'
+                        }
+                    },
+                    {
+                        featureType: 'label',
+                        elementType: 'labels.text.fill',
+                        stylers: {
+                            color: '#999999'
+                        }
+                    }
+                ]
+            }
+        },
+        series: [
+            {
+                type: 'scatter',
+                coordinateSystem: 'bmap',
+                data: convertData(data),
+                symbolSize: function (val) {
+                    return val[2];
+                },
+                encode: {
+                    value: 2
+                },
+                label: {
+                    formatter: '{b}',
+                    position: 'right',
+                    show: true
+                },
+                emphasis: {
+                    show: true
+                },
+
+            },
+        ],
+        tooltip: {
+            trigger: 'item',
+            formatter: function (params) {
+                return '<div><img src="' + params.name + '.png' + '"/></div>'
+            },
+        },
+    };
+    myChart.setOption(option);
+
+</script>
+</body>
+</html>
